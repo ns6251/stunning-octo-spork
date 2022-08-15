@@ -11,6 +11,7 @@ from .logentry import LogEntry
 @dataclass(frozen=True)
 class Args:
     log: Path
+    n: int
 
     @staticmethod
     def parse_args(argv: Sequence[str] | None = None) -> "Args":
@@ -22,9 +23,10 @@ class Args:
         """
         parser = argparse.ArgumentParser(description="監視ログの統計")
         parser.add_argument("path", nargs="?", type=Path, help="読み込む監視ログのパス")
+        parser.add_argument("-n", nargs="?", default=1, type=int, help="故障判定に必要な連続タイムアウトの回数", metavar="N")
         args = parser.parse_args(argv)
         log = cast(Path, args.path)
-        return Args(log)
+        return Args(log, cast(int, args.n))
 
 
 def main() -> None:

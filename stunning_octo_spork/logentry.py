@@ -6,15 +6,15 @@ from ipaddress import IPv4Interface, ip_interface
 @dataclass
 class LogEntry:
     timestamp: datetime
-    srv_addr: IPv4Interface
+    addr: IPv4Interface
     ping: int | None
 
-    @classmethod
-    def from_list(cls, entry: list[str]) -> "LogEntry":
-        timestamp_, srv_addr_, ping_ = entry
+    @staticmethod
+    def from_list(entry: list[str]) -> "LogEntry":
+        timestamp_, addr_, ping_ = entry
 
         timestamp = datetime.strptime(timestamp_, r"%Y%m%d%H%M%S")
-        srv_addr = ip_interface(srv_addr_)
+        srv_addr = ip_interface(addr_)
 
         if type(srv_addr) is not IPv4Interface:
             raise ValueError("server address is not IPv4Interface")

@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Sequence, cast
 
+from .detect import ServerDownDetector
 from .logentry import LogEntry
 
 
@@ -29,8 +30,17 @@ class Args:
 def main() -> None:
     args = Args.parse_args()
 
+    sdd = ServerDownDetector()
+
     with open(args.log, mode="r", encoding="utf8") as f:
         reader = csv.reader(f)
         log_entries = map(LogEntry.from_list, reader)
 
-        print(*list(log_entries), sep="\n")
+        for entry in log_entries:
+            sdd.add(entry)
+
+    for down in sdd.detect():
+        itf, period = down
+        begin = period.begin.strftime(r"%Y%m%d%H%M%S")
+        end = period.end.strftime(r"%Y%m%d%H%M%S") if period.end else "-"
+        print(f"{itf.with_prefixlen},{begin},{end}")

@@ -35,7 +35,8 @@ options:
 
 ### ユニットテスト
 
-Available at `/tests` directory.
+ユニットテストは `/tests` ディレクトリにある．
+ユニットテストには，pytestを利用した．
 
 ### システムテスト
 

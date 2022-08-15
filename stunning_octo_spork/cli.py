@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Sequence, cast
 
-from .detect import OverloadDetector, ServerDownDetector
+from .detect import OverloadDetector, DownDetector
 from .logentry import LogEntry
 
 
@@ -38,7 +38,7 @@ class Args:
 def main() -> None:
     args = Args.parse_args()
 
-    sdd = ServerDownDetector(args.n)
+    sdd = DownDetector(args.n)
     old = OverloadDetector(args.m, args.t)
 
     with open(args.log, mode="r", encoding="utf8") as f:

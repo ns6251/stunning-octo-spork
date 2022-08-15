@@ -57,4 +57,4 @@ def main() -> None:
     for report in old.detect():
         begin = report.period.begin.strftime(r"%Y%m%d%H%M%S")
         end = report.period.end.strftime(r"%Y%m%d%H%M%S") if report.period.end else "-"
-        print(f"down,{report.addr.with_prefixlen},{begin},{end}")
+        print(f"overload,{report.addr.with_prefixlen},{begin},{end}")

@@ -9,27 +9,30 @@ from .logentry import LogEntry
 
 @dataclass
 class Period:
+    """期間"""
     begin: datetime
     end: datetime | None
 
 
 @dataclass
 class Report:
+    """ネットワークインターフェースとそれに対するイベント（故障・過負荷）の期間"""
     addr: IPv4Interface | IPv4Network
     period: Period
 
 
 class DownDetector:
+    """
+    サーバの故障とスイッチの故障を検出する．
+    """
     __N: Final[int]
     __timedouts: defaultdict[IPv4Network, dict[IPv4Interface, list[datetime]]]
     __downed: list[Report]
-    # __downed_switch: list[tuple[IPv4Network, Period]]
 
     def __init__(self, n: int) -> None:
         self.__N = n
         self.__timedouts = defaultdict(dict)
         self.__downed = list()
-        # self.__downed_switch = list()
 
     def __is_switch_downed(self, network: IPv4Network) -> bool:
         return all(map(lambda x: len(x) >= self.__N, self.__timedouts[network].values()))
@@ -70,6 +73,9 @@ class DownDetector:
 
 
 class OverloadDetector:
+    """
+    サーバの過負荷状態を検出する．
+    """
     __WINDOW_SIZE: Final[int]
     __THRESHOLD: Final[int]
     __history: defaultdict[IPv4Interface, deque[LogEntry]]

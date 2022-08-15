@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Sequence, cast
 
-from .detect import OverloadDetector, DownDetector
+from .detect import DownDetector, OverloadDetector
 from .logentry import LogEntry
 
 
@@ -49,12 +49,12 @@ def main() -> None:
             sdd.add(entry)
             old.add(entry)
 
-    for itf, period in sdd.detect():
-        begin = period.begin.strftime(r"%Y%m%d%H%M%S")
-        end = period.end.strftime(r"%Y%m%d%H%M%S") if period.end else "-"
-        print(f"down,{itf.with_prefixlen},{begin},{end}")
+    for report in sdd.detect():
+        begin = report.period.begin.strftime(r"%Y%m%d%H%M%S")
+        end = report.period.end.strftime(r"%Y%m%d%H%M%S") if report.period.end else "-"
+        print(f"down,{report.addr.with_prefixlen},{begin},{end}")
 
-    for itf, period in old.detect():
-        begin = period.begin.strftime(r"%Y%m%d%H%M%S")
-        end = period.end.strftime(r"%Y%m%d%H%M%S") if period.end else "-"
-        print(f"overload,{itf.with_prefixlen},{begin},{end}")
+    for report in old.detect():
+        begin = report.period.begin.strftime(r"%Y%m%d%H%M%S")
+        end = report.period.end.strftime(r"%Y%m%d%H%M%S") if report.period.end else "-"
+        print(f"down,{report.addr.with_prefixlen},{begin},{end}")

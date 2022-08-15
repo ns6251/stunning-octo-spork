@@ -32,7 +32,7 @@ class Args:
 def main() -> None:
     args = Args.parse_args()
 
-    sdd = ServerDownDetector()
+    sdd = ServerDownDetector(args.n)
 
     with open(args.log, mode="r", encoding="utf8") as f:
         reader = csv.reader(f)
